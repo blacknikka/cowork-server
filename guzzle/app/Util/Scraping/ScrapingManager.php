@@ -2,18 +2,13 @@
 
 namespace App\Util\Scraping;
 
-use GuzzleHttp\Client;
+use App\Util\Scraping\GetDataFromWeb;
 
 class ScrapingManager
 {
     public function exec()
     {
-        $client = new Client();
-        $response = $client->request(
-            'GET',
-            'https://goworkship.com/magazine/tokyo-coworking-space/',
-            ['verify' => false]
-        );
+        $response = GetDataFromWeb::getData();
 
         $document = new \DOMDocument();
         @$document->loadHTML(mb_convert_encoding($response->getBody()->getContents(), 'HTML-ENTITIES', 'UTF-8'));
@@ -44,7 +39,11 @@ class ScrapingManager
                         break;
                 }
             }
-            $tags[] = $item;
+
+            if (!empty($item)) {
+                // 空ではない場合登録する
+                $tags[] = $item;
+            }
         }
 
         return $tags;
