@@ -16,29 +16,43 @@ class WebDataProvider implements WebDataProviderInterface
      */
     public function setWebDataToStore($store)
     {
-        DB::transaction(function () use ($store) {
-            foreach ($store as $value) {
-                $data = DB::table('store')
-                    ->where('name', '=', $value['name'])
-                    ->count();
-                
-                $updateData = [
-                    'name' => $value['name'],
-                    'address' => $value['address'],
-                    'open' => $value['time'],
-                ];
-
-                if (0 < $data) {
-                    // update
-                    DB::table('store')
+        $result = DB::transaction(function () use ($store) {
+            try {
+                foreach ($store as $value) {
+                    $data = DB::table('store')
                         ->where('name', '=', $value['name'])
-                        ->update($updateData);
-                } else {
-                    // insert
-                    DB::table('store')->insert($updateData);
+                        ->count();
+                    
+                    $updateData = [
+                        'name' => $value['name'],
+                        'address' => $value['address'],
+                        'open' => $value['time'],
+                    ];
+    
+                    if (0 < $data) {
+                        // update
+                        DB::table('store')
+                            ->where('name', '=', $value['name'])
+                            ->update($updateData);
+                    } else {
+                        // insert
+                        DB::table('store')->insert($updateData);
+                    }
                 }
+            } catch (\Exception $e) {
+                return [
+                    'result' => false,
+                    'count' => null,
+                ];
             }
+
+            return [
+                'result' => true,
+                'count' => count($store),
+            ];
         });
+
+        return $result;
     }
 
     /**
