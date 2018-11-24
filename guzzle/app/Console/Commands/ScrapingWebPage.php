@@ -4,9 +4,17 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Util\Scraping\ScrapingManager;
+use App\Services\WebDataService;
 
 class ScrapingWebPage extends Command
 {
+    /**
+     * DIされるWebDataService
+     *
+     * @var WebDataService
+     */
+    private $webDataService;
+
     /**
      * The name and signature of the console command.
      *
@@ -26,9 +34,10 @@ class ScrapingWebPage extends Command
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(WebDataService $s)
     {
         parent::__construct();
+        $this->webDataService = $s;
     }
 
     /**
@@ -41,6 +50,8 @@ class ScrapingWebPage extends Command
         // exec scraping.
         $s = new ScrapingManager();
         $result = $s->exec();
-        $this->line(json_encode($result, JSON_UNESCAPED_UNICODE));
+        // $this->line(json_encode($result, JSON_UNESCAPED_UNICODE));
+
+        echo $this->webDataService->setWebDataToStore($result);
     }
 }
