@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\DataProvider\WebData;
 
+use Illuminate\Support\Facades\DB;
 use App\DataProvider\WebData\WebDataProviderInterface;
 
 class WebDataProvider implements WebDataProviderInterface
@@ -15,7 +16,29 @@ class WebDataProvider implements WebDataProviderInterface
      */
     public function setWebDataToStore($store)
     {
-        return 'setWebDataToStore';
+        DB::transaction(function () use ($store) {
+            foreach ($store as $value) {
+                $data = DB::table('store')
+                    ->where('name', '=', $value['name'])
+                    ->count();
+                
+                $updateData = [
+                    'name' => $value['name'],
+                    'address' => $value['address'],
+                    'open' => $value['time'],
+                ];
+
+                if (0 < $data) {
+                    // update
+                    DB::table('store')
+                        ->where('name', '=', $value['name'])
+                        ->update($updateData);
+                } else {
+                    // insert
+                    DB::table('store')->insert($updateData);
+                }
+            }
+        });
     }
 
     /**
