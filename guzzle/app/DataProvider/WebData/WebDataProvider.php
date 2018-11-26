@@ -28,7 +28,7 @@ class WebDataProvider implements WebDataProviderInterface
                         'address' => $value['address'],
                         'open' => $value['time'],
                     ];
-    
+
                     if (0 < $data) {
                         // update
                         DB::table('store')
@@ -62,6 +62,24 @@ class WebDataProvider implements WebDataProviderInterface
      */
     public function getAllData()
     {
+        $results = DB::table('store')
+            ->select([
+                'name',
+                'address',
+                'open'
+            ])
+            ->get();
+
+        $ret = [];
+        foreach ($results as $result) {
+            $ret[] = [
+                'name' => $result->name,
+                'type' => $result->address,
+                'count' => $result->open,
+            ];
+        }
+
+        return $ret;
     }
 
     /**

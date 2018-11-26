@@ -15,4 +15,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('store', 'WebDataController');
+Route::resource(
+    'store',
+    'WebDataController',
+    ['only' => ['index', 'show']]
+);

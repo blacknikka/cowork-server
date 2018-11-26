@@ -7,11 +7,16 @@ use App\Services\WebDataService;
 
 class WebDataController extends Controller
 {
+    /**
+     * DI
+     *
+     * @var WebDataService
+     */
     private $service;
 
-    public function __constructor(WebDataService $s)
+    public function __constructor(WebDataService $webDataService)
     {
-        $this->service = $s;
+        $this->service = $webDataService;
     }
 
     /**
@@ -21,7 +26,9 @@ class WebDataController extends Controller
      */
     public function index()
     {
-        //
+        // show all data.
+        var_dump($this->service);
+        // return $this->service->getAllData();
     }
 
     /**
