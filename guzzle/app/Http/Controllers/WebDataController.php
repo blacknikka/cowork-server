@@ -14,7 +14,7 @@ class WebDataController extends Controller
      */
     private $service;
 
-    public function __constructor(WebDataService $webDataService)
+    public function __construct(WebDataService $webDataService)
     {
         $this->service = $webDataService;
     }
@@ -27,8 +27,7 @@ class WebDataController extends Controller
     public function index()
     {
         // show all data.
-        var_dump($this->service);
-        // return $this->service->getAllData();
+        return json_encode($this->service->getAllData(), JSON_UNESCAPED_UNICODE);
     }
 
     /**

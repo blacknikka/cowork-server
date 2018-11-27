@@ -52,6 +52,6 @@ class ScrapingWebPage extends Command
         $result = $s->exec();
         // $this->line(json_encode($result, JSON_UNESCAPED_UNICODE));
 
-        var_dump($this->webDataService->setWebDataToStore($result));
+        $this->webDataService->setWebDataToStore($result);
     }
 }
