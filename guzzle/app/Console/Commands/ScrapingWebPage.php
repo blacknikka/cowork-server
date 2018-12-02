@@ -50,7 +50,14 @@ class ScrapingWebPage extends Command
         // exec scraping.
         $s = new ScrapingManager();
         $result = $s->exec();
-        // $this->line(json_encode($result, JSON_UNESCAPED_UNICODE));
+
+        foreach ($result as $value) {
+            $this->line('---------------');
+            $this->line($value['name']);
+            $this->line($value['address']);
+            $this->line($value['time']);
+            $this->line('---------------');
+        }
 
         $this->webDataService->setWebDataToStore($result);
     }

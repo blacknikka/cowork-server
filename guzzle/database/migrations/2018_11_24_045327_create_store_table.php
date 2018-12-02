@@ -18,7 +18,6 @@ class CreateStoreTable extends Migration
             $table->string('name');
             $table->string('address');
             $table->string('open');
-            $table->timestamps();
         });
     }
 

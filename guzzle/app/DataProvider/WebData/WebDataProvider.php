@@ -22,7 +22,7 @@ class WebDataProvider implements WebDataProviderInterface
                     $data = DB::table('store')
                         ->where('name', '=', $value['name'])
                         ->count();
-                    
+
                     $updateData = [
                         'name' => $value['name'],
                         'address' => $value['address'],
@@ -36,7 +36,8 @@ class WebDataProvider implements WebDataProviderInterface
                             ->update($updateData);
                     } else {
                         // insert
-                        DB::table('store')->insert($updateData);
+                        DB::table('store')
+                            ->insert($updateData);
                     }
                 }
             } catch (\Exception $e) {

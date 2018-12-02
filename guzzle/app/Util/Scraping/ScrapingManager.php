@@ -17,7 +17,7 @@ class ScrapingManager
         // 各店舗情報のテーブルを取得する
         $nodes = $xpath->query('//div[@class="tableWrap"]/table/tbody');
 
-        $tags = [];
+        $stores = [];
         foreach ($nodes as $tbody) {
             $item = [];
             foreach ($xpath->query('.//tr', $tbody) as $t_row) {
@@ -29,23 +29,23 @@ class ScrapingManager
                 // データの作成
                 switch ($title) {
                     case '施設':
-                        $item['name'] = $data->nodeValue;
+                        $item['name'] = trim($data->nodeValue);
                         break;
                     case '住所':
-                        $item['address'] = $data->nodeValue;
+                        $item['address'] = trim($data->nodeValue);
                         break;
                     case '営業時間':
-                        $item['time'] = $data->nodeValue;
+                        $item['time'] = trim($data->nodeValue);
                         break;
                 }
             }
 
             if (!empty($item)) {
                 // 空ではない場合登録する
-                $tags[] = $item;
+                $stores[] = $item;
             }
         }
 
-        return $tags;
+        return $stores;
     }
 }
